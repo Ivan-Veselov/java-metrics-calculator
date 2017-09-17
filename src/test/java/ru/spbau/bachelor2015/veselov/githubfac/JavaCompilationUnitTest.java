@@ -1,7 +1,6 @@
 package ru.spbau.bachelor2015.veselov.githubfac;
 
 import com.github.javaparser.JavaParser;
-import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.symbolsolver.javaparsermodel.declarations.JavaParserMethodDeclaration;
 import com.github.javaparser.symbolsolver.resolution.typesolvers.JavaParserTypeSolver;
@@ -12,13 +11,8 @@ import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
 
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.InputStream;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-
-import static org.junit.Assert.*;
 
 public class JavaCompilationUnitTest {
     @Rule
@@ -30,7 +24,7 @@ public class JavaCompilationUnitTest {
         JavaParserTypeSolver typeSolver = getNewTypeSolver();
         JavaCompilationUnit compilationUnit = getCompilationUnit(file, typeSolver);
 
-        for (MethodDeclaration method : compilationUnit.getMethods()) {
+        for (MethodDeclaration method : compilationUnit.getMethodsDeclarations()) {
             JavaParserMethodDeclaration jpmd = new JavaParserMethodDeclaration(method, typeSolver);
             System.out.println(jpmd.getQualifiedName());
         }

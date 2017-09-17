@@ -29,7 +29,7 @@ public final class JavaCompilationUnit {
         return typeSolver;
     }
 
-    public @NotNull List<MethodDeclaration> getMethods() {
+    public @NotNull List<MethodDeclaration> getMethodsDeclarations() {
         GenericVisitorAdapter<List<MethodDeclaration>, Void> visitor =
         new GenericVisitorAdapter<List<MethodDeclaration>, Void>() {
             private final @NotNull ArrayList<MethodDeclaration> list = new ArrayList<>();
