@@ -35,4 +35,8 @@ public class JavaMethodDeclaration {
     public @NotNull String getQualifiedName() {
         return solvedMethodDeclaration.getQualifiedName();
     }
+
+    public @NotNull String getTextualAST() {
+        throw new UnsupportedOperationException();
+    }
 }
