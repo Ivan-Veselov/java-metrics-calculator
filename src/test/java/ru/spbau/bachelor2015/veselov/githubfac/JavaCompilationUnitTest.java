@@ -24,9 +24,8 @@ public class JavaCompilationUnitTest {
         JavaParserTypeSolver typeSolver = getNewTypeSolver();
         JavaCompilationUnit compilationUnit = getCompilationUnit(file, typeSolver);
 
-        for (MethodDeclaration method : compilationUnit.getMethodsDeclarations()) {
-            JavaParserMethodDeclaration jpmd = new JavaParserMethodDeclaration(method, typeSolver);
-            System.out.println(jpmd.getQualifiedName());
+        for (JavaMethodDeclaration methodDeclaration : compilationUnit.getMethodsDeclarations()) {
+            System.out.println(methodDeclaration.getQualifiedName());
         }
     }
 

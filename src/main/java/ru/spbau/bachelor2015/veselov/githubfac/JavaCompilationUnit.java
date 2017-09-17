@@ -29,21 +29,21 @@ public final class JavaCompilationUnit {
         return typeSolver;
     }
 
-    public @NotNull List<MethodDeclaration> getMethodsDeclarations() {
-        GenericVisitorAdapter<List<MethodDeclaration>, Void> visitor =
-        new GenericVisitorAdapter<List<MethodDeclaration>, Void>() {
-            private final @NotNull ArrayList<MethodDeclaration> list = new ArrayList<>();
+    public @NotNull List<JavaMethodDeclaration> getMethodsDeclarations() {
+        GenericVisitorAdapter<List<JavaMethodDeclaration>, Void> visitor =
+        new GenericVisitorAdapter<List<JavaMethodDeclaration>, Void>() {
+            private final @NotNull ArrayList<JavaMethodDeclaration> list = new ArrayList<>();
 
-            public @Override @NotNull List<MethodDeclaration> visit(final CompilationUnit node,
-                                                                    final Void arg) {
+            public @Override @NotNull List<JavaMethodDeclaration> visit(final CompilationUnit node,
+                                                                        final Void arg) {
                 super.visit(node, arg);
                 return list;
             }
 
             @Override
-            public @Nullable List<MethodDeclaration> visit(final MethodDeclaration node,
-                                                           final Void arg) {
-                list.add(node);
+            public @Nullable List<JavaMethodDeclaration> visit(final MethodDeclaration node,
+                                                               final Void arg) {
+                list.add(new JavaMethodDeclaration(node, typeSolver));
                 return null;
             }
         };
