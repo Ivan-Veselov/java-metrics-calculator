@@ -89,18 +89,20 @@ public abstract class JavaAstNode {
         return Optional.ofNullable(getNode().accept(visitor, null));
     }
 
-    public @NotNull List<JavaMethodDeclaration> allInsideMethodsDeclarations() {
-        class Fetcher extends VoidVisitorAdapter<Void> {
-            private final @NotNull ArrayList<JavaMethodDeclaration> list = new ArrayList<>();
+    public <T extends JavaAstNode> @NotNull List<T> allInnerNodes(
+                                                    final @NotNull JavaAstNodeFactory<T> factory) {
+        ArrayList<T> list = new ArrayList<>();
 
-            @Override
-            public void visit(final MethodDeclaration node, final Void arg) {
-                list.add(new JavaMethodDeclaration(node, getJavaParserTypeSolver()));
+        class Fetcher {
+            public void fetch(final @NotNull Node node) {
+                factory.create(node, getJavaParserTypeSolver()).ifPresent(list::add);
+                for (Node child : node.getChildNodes()) {
+                    fetch(child);
+                }
             }
         }
 
-        Fetcher fetcher = new Fetcher();
-        getNode().accept(fetcher, null);
-        return fetcher.list;
+        new Fetcher().fetch(getNode());
+        return list;
     }
 }

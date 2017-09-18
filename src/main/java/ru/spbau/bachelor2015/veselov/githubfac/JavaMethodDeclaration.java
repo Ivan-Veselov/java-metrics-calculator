@@ -6,12 +6,25 @@ import com.github.javaparser.symbolsolver.javaparsermodel.declarations.JavaParse
 import com.github.javaparser.symbolsolver.resolution.typesolvers.JavaParserTypeSolver;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Optional;
+
 public class JavaMethodDeclaration extends JavaAstNode {
     private final @NotNull MethodDeclaration methodDeclaration;
 
     private final @NotNull JavaParserTypeSolver javaParserTypeSolver;
 
     private final @NotNull JavaParserMethodDeclaration solvedMethodDeclaration;
+
+    public static final @NotNull JavaAstNodeFactory<JavaMethodDeclaration> factory =
+            (node, javaParserTypeSolver) -> {
+                if (!node.getClass().equals(MethodDeclaration.class)) {
+                    return Optional.empty();
+                }
+
+                MethodDeclaration methodDeclaration = (MethodDeclaration) node;
+                return Optional.of(
+                        new JavaMethodDeclaration(methodDeclaration, javaParserTypeSolver));
+            };
 
     public JavaMethodDeclaration(final @NotNull MethodDeclaration methodDeclaration,
                                  final @NotNull JavaParserTypeSolver javaParserTypeSolver) {

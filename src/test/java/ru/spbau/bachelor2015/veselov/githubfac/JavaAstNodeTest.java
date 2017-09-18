@@ -32,7 +32,7 @@ public class JavaAstNodeTest extends TestEnvironment {
     }
 
     @Test
-    public void allInsideMethodsDeclarationsTest() throws Exception {
+    public void allInnerMethodsDeclarationsTest() throws Exception {
         File file = addSourceFileToProjectDir("/JavaClasses/Methods.java");
         JavaParserTypeSolver typeSolver = getNewTypeSolver();
         JavaCompilationUnit compilationUnit = getJavaCompilationUnit(file, typeSolver);
@@ -41,8 +41,10 @@ public class JavaAstNodeTest extends TestEnvironment {
             TODO: Invalid test.
             Actually two method (one of anonymous class and one of function local class, both are
             situated inside function body) are missed. Seems like it's a problem of JavaParser.
+            If to go through nodes manually, this methods will be found but symbol solver won't
+            be able to deal with them.
         */
-        assertThat(compilationUnit.allInsideMethodsDeclarations()
+        assertThat(compilationUnit.allInnerNodes(JavaMethodDeclaration.factory)
                                   .stream()
                                   .map(JavaMethodDeclaration::getQualifiedName)
                                   .collect(Collectors.toList()),
