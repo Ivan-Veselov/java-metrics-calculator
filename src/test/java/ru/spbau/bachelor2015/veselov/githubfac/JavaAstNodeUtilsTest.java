@@ -1,5 +1,7 @@
 package ru.spbau.bachelor2015.veselov.githubfac;
 
+import com.github.javaparser.JavaParser;
+import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.symbolsolver.resolution.typesolvers.JavaParserTypeSolver;
 import org.junit.Test;
 
@@ -11,31 +13,30 @@ import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
 
-public class JavaAstNodeTest extends TestEnvironment {
+public class JavaAstNodeUtilsTest extends TestEnvironment {
     @Test
-    public void textualASTTest() throws Exception {
+    public void textualAstOfTest() throws Exception {
         File file = addSourceFileToProjectDir("/JavaClasses/ClassToPrint.java");
-        JavaParserTypeSolver typeSolver = getNewTypeSolver();
-        JavaCompilationUnit compilationUnit = getJavaCompilationUnit(file, typeSolver);
+        CompilationUnit unit = JavaParser.parse(file);
 
-        assertThat(compilationUnit.textualAST(),
+        assertThat(JavaAstNodeUtils.getInstance().textualAstOf(unit),
                 is(equalTo(astFrom("/AST/ClassToPrint"))));
     }
 
     @Test
-    public void codeLengthTest() throws Exception {
+    public void numberOfCodeLinesInTest() throws Exception {
         File file = addSourceFileToProjectDir("/JavaClasses/ClassLength.java");
-        JavaParserTypeSolver typeSolver = getNewTypeSolver();
-        JavaCompilationUnit compilationUnit = getJavaCompilationUnit(file, typeSolver);
+        CompilationUnit unit = JavaParser.parse(file);
 
-        assertThat(compilationUnit.linesOfCode(), is(equalTo(7)));
+        assertThat(JavaAstNodeUtils.getInstance().codeLinesNumberIn(unit),
+                                                                        is(equalTo(7)));
     }
 
     @Test
-    public void allInnerMethodsDeclarationsTest() throws Exception {
+    public void allInnerMethodsOfTest() throws Exception {
         File file = addSourceFileToProjectDir("/JavaClasses/Methods.java");
         JavaParserTypeSolver typeSolver = getNewTypeSolver();
-        JavaCompilationUnit compilationUnit = getJavaCompilationUnit(file, typeSolver);
+        CompilationUnit unit = JavaParser.parse(file);
 
         /*
             TODO: Invalid test.
@@ -44,10 +45,11 @@ public class JavaAstNodeTest extends TestEnvironment {
             If to go through nodes manually, this methods will be found but symbol solver won't
             be able to deal with them.
         */
-        assertThat(compilationUnit.allInnerNodes(JavaMethodDeclaration.factory)
-                                  .stream()
-                                  .map(JavaMethodDeclaration::getQualifiedName)
-                                  .collect(Collectors.toList()),
+        assertThat(JavaAstNodeUtils.getInstance()
+                                   .allInnerEntitiesOf(unit, typeSolver, JavaMethod.creator)
+                                   .stream()
+                                   .map(JavaMethod::getQualifiedName)
+                                   .collect(Collectors.toList()),
                 containsInAnyOrder("Interface.method0",
                                           "Methods.method1",
                                           "Methods.method2",

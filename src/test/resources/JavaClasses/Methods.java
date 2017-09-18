@@ -9,11 +9,11 @@ abstract class Methods {
     }
 
     private int method2() {
-        /*return new Interface() {
+        return new Interface() {
             public int method0() {
                 return 1 - 1;
             }
-        }.method0();*/
+        }.method0();
         return 0;
     }
 
@@ -31,11 +31,11 @@ abstract class Methods {
 
 class HiddenClass {
     public Integer method6() {
-        /*class MethodClass {
+        class MethodClass {
             private int method7() {
                 return -1;
             }
-        }*/
+        }
 
         return 256;
     }

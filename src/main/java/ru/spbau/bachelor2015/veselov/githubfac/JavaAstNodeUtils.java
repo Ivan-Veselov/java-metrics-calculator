@@ -15,12 +15,17 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public abstract class JavaAstNode {
-    public abstract @NotNull Node getNode();
+public class JavaAstNodeUtils {
+    private static JavaAstNodeUtils ourInstance = new JavaAstNodeUtils();
 
-    public abstract @NotNull JavaParserTypeSolver getJavaParserTypeSolver();
+    public static JavaAstNodeUtils getInstance() {
+        return ourInstance;
+    }
 
-    public @NotNull String textualAST() {
+    private JavaAstNodeUtils() {
+    }
+
+    public @NotNull String textualAstOf(final @NotNull Node node) {
         class TextBuilder {
             private static final int INDENT_INC_SIZE = 2;
 
@@ -52,14 +57,14 @@ public abstract class JavaAstNode {
             }
         }
 
-        return new TextBuilder(getNode()).getText();
+        return new TextBuilder(node).getText();
     }
 
-    public int linesOfCode() {
+    public int codeLinesNumberIn(final @NotNull Node node) {
         int lines = 1;
 
         // TODO: throw an exception if null?
-        for (JavaToken token : getNode().getTokenRange().get()) {
+        for (JavaToken token : node.getTokenRange().get()) {
             if (token.getCategory().isEndOfLine()) {
                 lines++;
             }
@@ -69,13 +74,16 @@ public abstract class JavaAstNode {
     }
 
     // TODO: need some test
-    public @NotNull Optional<JavaMethod> innerMethodByQualifiedName(
-                                                                final @NotNull String methodName) {
+    // TODO: Should be moved to project entity as it has connection with project context.
+    public @NotNull Optional<JavaMethod> methodByQualifiedNameIn(
+                                         final @NotNull Node node,
+                                         final @NotNull JavaParserTypeSolver javaParserTypeSolver,
+                                         final @NotNull String methodName) {
         GenericVisitorAdapter<JavaMethod, Void> visitor =
             new GenericVisitorAdapter<JavaMethod, Void>() {
                 @Override
                 public @Nullable JavaMethod visit(final MethodDeclaration node, final Void arg) {
-                    JavaMethod method = new JavaMethod(getJavaParserTypeSolver(), node);
+                    JavaMethod method = new JavaMethod(javaParserTypeSolver, node);
 
                     if (method.getQualifiedName().equals(methodName)) {
                         return method;
@@ -85,11 +93,14 @@ public abstract class JavaAstNode {
                 }
             };
 
-        return Optional.ofNullable(getNode().accept(visitor, null));
+        return Optional.ofNullable(node.accept(visitor, null));
     }
 
-    public <T> @NotNull List<T> allInnerEntities(
+    // TODO: Should be moved to project entity as it has connection with project context.
+    public <T> @NotNull List<T> allInnerEntitiesOf(
+                            final @NotNull Node node,
+                            final @NotNull JavaParserTypeSolver javaParserTypeSolver,
                             final @NotNull GenericVisitor<List<T>, JavaParserTypeSolver> creator) {
-        return getNode().accept(creator, getJavaParserTypeSolver());
+        return node.accept(creator, javaParserTypeSolver);
     }
 }

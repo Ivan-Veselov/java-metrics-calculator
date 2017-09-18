@@ -30,11 +30,6 @@ public class TestEnvironment {
         return new JavaParserTypeSolver(projectFolder.getRoot());
     }
 
-    protected @NotNull JavaCompilationUnit getJavaCompilationUnit(final @NotNull File file,
-                                  final @NotNull JavaParserTypeSolver typeSolver) throws Exception {
-        return new JavaCompilationUnit(JavaParser.parse(file), typeSolver);
-    }
-
     protected @NotNull String astFrom(final @NotNull String fileName) throws Exception {
         Path pathToFile = Paths.get(getClass().getResource(fileName).getFile());
         return FileUtils.readFileToString(pathToFile.toFile(), (Charset) null);
