@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="Gradle: com.github.javaparser:javaparser-core:3.4.0">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.github.javaparser/javaparser-core/3.4.0/1595ac53af042b4e297cfb3634bb6dbd896119e6/javaparser-core-3.4.0.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.github.javaparser/javaparser-core/3.4.0/9b8336b25a890eb032ba7400a8274f58eee3bdf0/javaparser-core-3.4.0-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

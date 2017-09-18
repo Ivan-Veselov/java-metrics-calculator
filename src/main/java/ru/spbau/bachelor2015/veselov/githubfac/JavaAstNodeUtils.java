@@ -3,6 +3,7 @@ package ru.spbau.bachelor2015.veselov.githubfac;
 import com.github.javaparser.JavaToken;
 import com.github.javaparser.ast.Node;
 import com.github.javaparser.ast.body.MethodDeclaration;
+import com.github.javaparser.ast.visitor.GenericVisitor;
 import com.github.javaparser.ast.visitor.GenericVisitorAdapter;
 import com.github.javaparser.ast.visitor.VoidVisitorAdapter;
 import com.github.javaparser.symbolsolver.resolution.typesolvers.JavaParserTypeSolver;
@@ -68,18 +69,16 @@ public abstract class JavaAstNode {
     }
 
     // TODO: need some test
-    public @NotNull Optional<JavaMethodDeclaration> methodDeclarationByName(
-                                                             final @NotNull String methodName) {
-        GenericVisitorAdapter<JavaMethodDeclaration, Void> visitor =
-            new GenericVisitorAdapter<JavaMethodDeclaration, Void>() {
+    public @NotNull Optional<JavaMethod> innerMethodByQualifiedName(
+                                                                final @NotNull String methodName) {
+        GenericVisitorAdapter<JavaMethod, Void> visitor =
+            new GenericVisitorAdapter<JavaMethod, Void>() {
                 @Override
-                public @Nullable JavaMethodDeclaration visit(final MethodDeclaration node,
-                                                             final Void arg) {
-                    JavaMethodDeclaration methodDeclaration =
-                            new JavaMethodDeclaration(node, getJavaParserTypeSolver());
+                public @Nullable JavaMethod visit(final MethodDeclaration node, final Void arg) {
+                    JavaMethod method = new JavaMethod(getJavaParserTypeSolver(), node);
 
-                    if (methodDeclaration.getQualifiedName().equals(methodName)) {
-                        return methodDeclaration;
+                    if (method.getQualifiedName().equals(methodName)) {
+                        return method;
                     }
 
                     return null;
@@ -89,20 +88,8 @@ public abstract class JavaAstNode {
         return Optional.ofNullable(getNode().accept(visitor, null));
     }
 
-    public <T extends JavaAstNode> @NotNull List<T> allInnerNodes(
-                                                    final @NotNull JavaAstNodeFactory<T> factory) {
-        ArrayList<T> list = new ArrayList<>();
-
-        class Fetcher {
-            public void fetch(final @NotNull Node node) {
-                factory.create(node, getJavaParserTypeSolver()).ifPresent(list::add);
-                for (Node child : node.getChildNodes()) {
-                    fetch(child);
-                }
-            }
-        }
-
-        new Fetcher().fetch(getNode());
-        return list;
+    public <T> @NotNull List<T> allInnerEntities(
+                            final @NotNull GenericVisitor<List<T>, JavaParserTypeSolver> creator) {
+        return getNode().accept(creator, getJavaParserTypeSolver());
     }
 }
