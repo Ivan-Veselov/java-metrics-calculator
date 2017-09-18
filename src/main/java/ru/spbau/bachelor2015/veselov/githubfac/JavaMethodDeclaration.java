@@ -1,5 +1,6 @@
 package ru.spbau.bachelor2015.veselov.githubfac;
 
+import com.github.javaparser.JavaToken;
 import com.github.javaparser.ast.Node;
 import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.symbolsolver.javaparsermodel.declarations.JavaParserMethodDeclaration;
@@ -71,5 +72,16 @@ public class JavaMethodDeclaration {
         }
 
         return new TextBuilder(methodDeclaration).getText();
+    }
+
+    public int codeLength() {
+        int length = 0;
+
+        // TODO: throw an exception if null?
+        for (JavaToken token : methodDeclaration.getTokenRange().get()) {
+            length += token.asString().length();
+        }
+
+        return length;
     }
 }
