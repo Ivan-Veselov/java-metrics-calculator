@@ -54,15 +54,17 @@ public abstract class JavaAstNode {
         return new TextBuilder(getNode()).getText();
     }
 
-    public int codeLength() {
-        int length = 0;
+    public int linesOfCode() {
+        int lines = 1;
 
         // TODO: throw an exception if null?
         for (JavaToken token : getNode().getTokenRange().get()) {
-            length += token.asString().length();
+            if (token.getCategory().isEndOfLine()) {
+                lines++;
+            }
         }
 
-        return length;
+        return lines;
     }
 
     // TODO: need some test

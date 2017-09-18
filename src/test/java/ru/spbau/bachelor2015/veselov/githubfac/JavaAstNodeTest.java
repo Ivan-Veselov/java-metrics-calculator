@@ -28,7 +28,7 @@ public class JavaAstNodeTest extends TestEnvironment {
         JavaParserTypeSolver typeSolver = getNewTypeSolver();
         JavaCompilationUnit compilationUnit = getJavaCompilationUnit(file, typeSolver);
 
-        assertThat(compilationUnit.codeLength(), is(equalTo(134)));
+        assertThat(compilationUnit.linesOfCode(), is(equalTo(7)));
     }
 
     @Test
