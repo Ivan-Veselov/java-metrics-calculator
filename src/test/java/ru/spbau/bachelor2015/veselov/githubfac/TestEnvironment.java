@@ -11,10 +11,6 @@ import java.io.File;
 import java.nio.charset.Charset;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Optional;
-
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.is;
 
 public class TestEnvironment {
     @Rule
@@ -42,15 +38,5 @@ public class TestEnvironment {
     protected @NotNull String astFrom(final @NotNull String fileName) throws Exception {
         Path pathToFile = Paths.get(getClass().getResource(fileName).getFile());
         return FileUtils.readFileToString(pathToFile.toFile(), (Charset) null);
-    }
-
-    protected @NotNull JavaMethodDeclaration methodDeclarationByName(
-                                            final @NotNull JavaCompilationUnit compilationUnit,
-                                            final @NotNull String methodName) {
-        Optional<JavaMethodDeclaration> optional =
-                                            compilationUnit.methodDeclarationByName(methodName);
-
-        assertThat(optional.isPresent(), is(true));
-        return optional.get();
     }
 }

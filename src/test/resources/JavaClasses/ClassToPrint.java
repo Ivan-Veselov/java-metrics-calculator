@@ -1,4 +1,4 @@
-public class ClassWithMethodToPrint {
+public class ClassToPrint {
     public static int gcd (final int a, final int b) {
         if (b == 0) {
             return a;

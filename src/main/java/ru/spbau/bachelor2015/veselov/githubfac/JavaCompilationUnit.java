@@ -1,76 +1,32 @@
 package ru.spbau.bachelor2015.veselov.githubfac;
 
 import com.github.javaparser.ast.CompilationUnit;
-import com.github.javaparser.ast.body.MethodDeclaration;
-import com.github.javaparser.ast.visitor.GenericVisitorAdapter;
+import com.github.javaparser.ast.Node;
 import com.github.javaparser.symbolsolver.resolution.typesolvers.JavaParserTypeSolver;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-
-public final class JavaCompilationUnit {
+public final class JavaCompilationUnit extends JavaAstNode {
     private final @NotNull CompilationUnit compilationUnit;
 
-    private final @NotNull JavaParserTypeSolver typeSolver;
+    private final @NotNull JavaParserTypeSolver javaParserTypeSolver;
 
     public JavaCompilationUnit(final @NotNull CompilationUnit compilationUnit,
-                               final @NotNull JavaParserTypeSolver typeSolver) {
+                               final @NotNull JavaParserTypeSolver javaParserTypeSolver) {
         this.compilationUnit = compilationUnit;
-        this.typeSolver = typeSolver;
+        this.javaParserTypeSolver = javaParserTypeSolver;
+    }
+
+    @Override
+    public @NotNull Node getNode() {
+        return compilationUnit;
+    }
+
+    @Override
+    public @NotNull JavaParserTypeSolver getJavaParserTypeSolver() {
+        return javaParserTypeSolver;
     }
 
     public @NotNull CompilationUnit getCompilationUnit() {
         return compilationUnit;
-    }
-
-    public @NotNull JavaParserTypeSolver getTypeSolver() {
-        return typeSolver;
-    }
-
-    // WARNING: copy-paste won't be generification. Visitor depends on CompilationUnit.
-    public @NotNull List<JavaMethodDeclaration> getMethodsDeclarations() {
-        GenericVisitorAdapter<List<JavaMethodDeclaration>, Void> visitor =
-        new GenericVisitorAdapter<List<JavaMethodDeclaration>, Void>() {
-            private final @NotNull ArrayList<JavaMethodDeclaration> list = new ArrayList<>();
-
-            public @Override @NotNull List<JavaMethodDeclaration> visit(final CompilationUnit node,
-                                                                        final Void arg) {
-                super.visit(node, arg);
-                return list;
-            }
-
-            @Override
-            public @Nullable List<JavaMethodDeclaration> visit(final MethodDeclaration node,
-                                                               final Void arg) {
-                list.add(new JavaMethodDeclaration(node, typeSolver));
-                return null;
-            }
-        };
-
-        return compilationUnit.accept(visitor, null);
-    }
-
-    public @NotNull Optional<JavaMethodDeclaration> methodDeclarationByName(
-                                                            final @NotNull String methodName) {
-        GenericVisitorAdapter<JavaMethodDeclaration, Void> visitor =
-        new GenericVisitorAdapter<JavaMethodDeclaration, Void>() {
-            @Override
-            public @Nullable JavaMethodDeclaration visit(final MethodDeclaration node,
-                                                               final Void arg) {
-                JavaMethodDeclaration methodDeclaration =
-                        new JavaMethodDeclaration(node, typeSolver);
-
-                if (methodDeclaration.getQualifiedName().equals(methodName)) {
-                    return methodDeclaration;
-                }
-
-                return null;
-            }
-        };
-
-        return Optional.ofNullable(compilationUnit.accept(visitor, null));
     }
 }
