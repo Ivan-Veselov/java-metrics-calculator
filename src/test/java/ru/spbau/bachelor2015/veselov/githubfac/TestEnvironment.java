@@ -8,6 +8,7 @@ import org.junit.Rule;
 import org.junit.rules.TemporaryFolder;
 
 import java.io.File;
+import java.nio.charset.Charset;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
@@ -32,5 +33,10 @@ public class TestEnvironment {
     protected @NotNull JavaCompilationUnit getJavaCompilationUnit(final @NotNull File file,
                                   final @NotNull JavaParserTypeSolver typeSolver) throws Exception {
         return new JavaCompilationUnit(JavaParser.parse(file), typeSolver);
+    }
+
+    protected @NotNull String astFrom(final @NotNull String fileName) throws Exception {
+        Path pathToFile = Paths.get(getClass().getResource(fileName).getFile());
+        return FileUtils.readFileToString(pathToFile.toFile(), (Charset) null);
     }
 }

@@ -12,7 +12,7 @@ import static org.hamcrest.Matchers.containsInAnyOrder;
 public class JavaCompilationUnitTest extends TestEnvironment {
     @Test
     public void getMethodsDeclarationsTest() throws Exception {
-        File file = addSourceFileToProjectDir("/Methods.java");
+        File file = addSourceFileToProjectDir("/JavaClasses/Methods.java");
         JavaParserTypeSolver typeSolver = getNewTypeSolver();
         JavaCompilationUnit compilationUnit = getJavaCompilationUnit(file, typeSolver);
 
