@@ -11,7 +11,10 @@ repositories {
 
 dependencies {
     compile group: 'org.jetbrains', name: 'annotations', version: '15.0'
+
     compile group: 'commons-io', name: 'commons-io', version: '2.5'
+    compile group: 'org.apache.commons', name: 'commons-lang3', version: '3.6'
+
     compile 'com.github.javaparser:javaparser-core:3.3.4'
     compile 'com.github.javaparser:java-symbol-solver-core:0.5.5'
 
