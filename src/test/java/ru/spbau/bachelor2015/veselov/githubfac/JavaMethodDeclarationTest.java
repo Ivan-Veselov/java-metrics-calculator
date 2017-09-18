@@ -10,6 +10,7 @@ import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.List;
+import java.util.Optional;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
@@ -22,10 +23,8 @@ public class JavaMethodDeclarationTest extends TestEnvironment {
         JavaParserTypeSolver typeSolver = getNewTypeSolver();
         JavaCompilationUnit compilationUnit = getJavaCompilationUnit(file, typeSolver);
 
-        List<JavaMethodDeclaration> methodsDeclarations = compilationUnit.getMethodsDeclarations();
-        assertThat(methodsDeclarations.size(), is(equalTo(1)));
-
-        JavaMethodDeclaration methodDeclaration = methodsDeclarations.get(0);
+        JavaMethodDeclaration methodDeclaration = methodDeclarationByName(compilationUnit,
+                                                        "ClassWithMethodToPrint.gcd");
         assertThat(methodDeclaration.getTextualAST(),
                 is(equalTo(astFrom("/AST/ClassWithMethodToPrint.gcd"))));
     }

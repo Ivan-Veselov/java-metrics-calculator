@@ -9,6 +9,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public final class JavaCompilationUnit {
     private final @NotNull CompilationUnit compilationUnit;
@@ -29,6 +30,7 @@ public final class JavaCompilationUnit {
         return typeSolver;
     }
 
+    // WARNING: copy-paste won't be generification. Visitor depends on CompilationUnit.
     public @NotNull List<JavaMethodDeclaration> getMethodsDeclarations() {
         GenericVisitorAdapter<List<JavaMethodDeclaration>, Void> visitor =
         new GenericVisitorAdapter<List<JavaMethodDeclaration>, Void>() {
@@ -49,5 +51,26 @@ public final class JavaCompilationUnit {
         };
 
         return compilationUnit.accept(visitor, null);
+    }
+
+    public @NotNull Optional<JavaMethodDeclaration> methodDeclarationByName(
+                                                            final @NotNull String methodName) {
+        GenericVisitorAdapter<JavaMethodDeclaration, Void> visitor =
+        new GenericVisitorAdapter<JavaMethodDeclaration, Void>() {
+            @Override
+            public @Nullable JavaMethodDeclaration visit(final MethodDeclaration node,
+                                                               final Void arg) {
+                JavaMethodDeclaration methodDeclaration =
+                        new JavaMethodDeclaration(node, typeSolver);
+
+                if (methodDeclaration.getQualifiedName().equals(methodName)) {
+                    return methodDeclaration;
+                }
+
+                return null;
+            }
+        };
+
+        return Optional.ofNullable(compilationUnit.accept(visitor, null));
     }
 }
