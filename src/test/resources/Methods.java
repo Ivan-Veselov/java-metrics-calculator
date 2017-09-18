@@ -30,6 +30,12 @@ abstract class Methods {
 
 class HiddenClass {
     public Integer method6() {
+        class MethodClass {
+            private int method7() {
+                return -1;
+            }
+        }
+
         return 256;
     }
 }

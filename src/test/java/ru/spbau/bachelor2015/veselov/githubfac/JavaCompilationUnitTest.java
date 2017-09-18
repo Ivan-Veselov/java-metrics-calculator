@@ -18,8 +18,8 @@ public class JavaCompilationUnitTest extends TestEnvironment {
 
         /*
             TODO: Invalid test.
-            Actually one method of anonymous class is missed. Seems like it's a problem of
-            JavaParser.
+            Actually two method (one of anonymous class and one of function local class, both are
+            situated inside function body) are missed. Seems like it's a problem of JavaParser.
         */
         assertThat(compilationUnit.getMethodsDeclarations()
                                   .stream()
