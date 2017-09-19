@@ -1,7 +1,7 @@
 package ru.spbau.bachelor2015.veselov.githubfac;
 
-import com.github.javaparser.ast.body.FieldDeclaration;
 import com.github.javaparser.ast.body.VariableDeclarator;
+import com.github.javaparser.ast.expr.VariableDeclarationExpr;
 import com.github.javaparser.ast.visitor.GenericListVisitorAdapter;
 import com.github.javaparser.ast.visitor.GenericVisitor;
 import com.github.javaparser.symbolsolver.resolution.typesolvers.JavaParserTypeSolver;
@@ -10,30 +10,30 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
-// TODO: need to hide constructor as it is opened to abuse.
-// May be passed VariableDeclarator of something which is not a field.
-public class JavaField {
+// TODO: looks very similar to JavaField. There may be a place for generalization.
+public class JavaLocalVariable {
     private final @NotNull JavaParserTypeSolver javaParserTypeSolver;
 
     private final @NotNull VariableDeclarator variableDeclarator;
 
-    public static final @NotNull GenericVisitor<List<JavaField>, JavaParserTypeSolver> creator =
-        new GenericListVisitorAdapter<JavaField, JavaParserTypeSolver>() {
+    public static final
+                @NotNull GenericVisitor<List<JavaLocalVariable>, JavaParserTypeSolver> creator =
+        new GenericListVisitorAdapter<JavaLocalVariable, JavaParserTypeSolver>() {
             @Override
-            public List<JavaField> visit(final FieldDeclaration n,
-                                         final JavaParserTypeSolver javaParserTypeSolver) {
-                List<JavaField> list = new ArrayList<>();
+            public List<JavaLocalVariable> visit(final VariableDeclarationExpr n,
+                                                 final JavaParserTypeSolver javaParserTypeSolver) {
+                List<JavaLocalVariable> list = new ArrayList<>();
 
                 for (VariableDeclarator declarator : n.getVariables()) {
-                    list.add(new JavaField(javaParserTypeSolver, declarator));
+                    list.add(new JavaLocalVariable(javaParserTypeSolver, declarator));
                 }
 
                 return list;
             }
         };
 
-    public JavaField(final @NotNull JavaParserTypeSolver javaParserTypeSolver,
-                     final @NotNull VariableDeclarator variableDeclarator) {
+    public JavaLocalVariable(final @NotNull JavaParserTypeSolver javaParserTypeSolver,
+                             final @NotNull VariableDeclarator variableDeclarator) {
         this.javaParserTypeSolver = javaParserTypeSolver;
         this.variableDeclarator = variableDeclarator;
     }

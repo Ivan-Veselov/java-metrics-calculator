@@ -13,7 +13,7 @@ import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
 
-// TODO: subdivide tests on different groups with different possible type classes, fields, etc.
+// TODO: subdivide tests on different groups with different possible classes type, fields type, etc.
 public class JavaAstNodeUtilsTest extends TestEnvironment {
     @Test
     public void textualAstOfTest() throws Exception {
@@ -62,7 +62,7 @@ public class JavaAstNodeUtilsTest extends TestEnvironment {
 
     @Test
     public void allInnerFieldsOfTest() throws Exception {
-        File file = addSourceFileToProjectDir("/JavaClasses/Fields.java");
+        File file = addSourceFileToProjectDir("/JavaClasses/Variables.java");
         JavaParserTypeSolver typeSolver = getNewTypeSolver();
         CompilationUnit unit = JavaParser.parse(file);
 
@@ -72,5 +72,19 @@ public class JavaAstNodeUtilsTest extends TestEnvironment {
                                    .map(JavaField::simpleName)
                                    .collect(Collectors.toList()),
                    containsInAnyOrder("field1", "field2"));
+    }
+
+    @Test
+    public void allInnerLocalVariablesOfTest() throws Exception {
+        File file = addSourceFileToProjectDir("/JavaClasses/Variables.java");
+        JavaParserTypeSolver typeSolver = getNewTypeSolver();
+        CompilationUnit unit = JavaParser.parse(file);
+
+        assertThat(JavaAstNodeUtils.getInstance()
+                                   .allInnerEntitiesOf(unit, typeSolver, JavaLocalVariable.creator)
+                                   .stream()
+                                   .map(JavaLocalVariable::simpleName)
+                                   .collect(Collectors.toList()),
+                containsInAnyOrder("c", "d"));
     }
 }
