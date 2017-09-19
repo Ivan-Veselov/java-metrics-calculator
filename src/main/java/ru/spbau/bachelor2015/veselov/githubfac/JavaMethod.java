@@ -29,7 +29,7 @@ public class JavaMethod {
             }
         };
 
-    public JavaMethod(final @NotNull JavaParserTypeSolver javaParserTypeSolver,
+    private JavaMethod(final @NotNull JavaParserTypeSolver javaParserTypeSolver,
                       final @NotNull MethodDeclaration methodDeclaration) {
         this.methodDeclaration = methodDeclaration;
         this.javaParserTypeSolver = javaParserTypeSolver;

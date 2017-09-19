@@ -32,7 +32,7 @@ public class JavaLocalVariable {
             }
         };
 
-    public JavaLocalVariable(final @NotNull JavaParserTypeSolver javaParserTypeSolver,
+    private JavaLocalVariable(final @NotNull JavaParserTypeSolver javaParserTypeSolver,
                              final @NotNull VariableDeclarator variableDeclarator) {
         this.javaParserTypeSolver = javaParserTypeSolver;
         this.variableDeclarator = variableDeclarator;

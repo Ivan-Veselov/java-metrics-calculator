@@ -10,8 +10,6 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
-// TODO: need to hide constructor as it is opened to abuse.
-// May be passed VariableDeclarator of something which is not a field.
 public class JavaField {
     private final @NotNull JavaParserTypeSolver javaParserTypeSolver;
 
@@ -32,7 +30,7 @@ public class JavaField {
             }
         };
 
-    public JavaField(final @NotNull JavaParserTypeSolver javaParserTypeSolver,
+    private JavaField(final @NotNull JavaParserTypeSolver javaParserTypeSolver,
                      final @NotNull VariableDeclarator variableDeclarator) {
         this.javaParserTypeSolver = javaParserTypeSolver;
         this.variableDeclarator = variableDeclarator;

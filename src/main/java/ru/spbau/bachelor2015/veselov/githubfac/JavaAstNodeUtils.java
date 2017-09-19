@@ -72,34 +72,28 @@ public class JavaAstNodeUtils {
         return lines;
     }
 
-    // TODO: need some test
-    // TODO: Should be moved to project entity as it has connection with project context.
-    public @NotNull Optional<JavaMethod> methodByQualifiedNameIn(
-                                         final @NotNull Node node,
-                                         final @NotNull JavaParserTypeSolver javaParserTypeSolver,
-                                         final @NotNull String methodName) {
-        GenericVisitorAdapter<JavaMethod, Void> visitor =
-            new GenericVisitorAdapter<JavaMethod, Void>() {
-                @Override
-                public @Nullable JavaMethod visit(final MethodDeclaration node, final Void arg) {
-                    JavaMethod method = new JavaMethod(javaParserTypeSolver, node);
-
-                    if (method.qualifiedName().equals(methodName)) {
-                        return method;
-                    }
-
-                    return null;
-                }
-            };
-
-        return Optional.ofNullable(node.accept(visitor, null));
-    }
-
     // TODO: Should be moved to project entity as it has connection with project context.
     public <T> @NotNull List<T> allInnerEntitiesOf(
                             final @NotNull Node node,
                             final @NotNull JavaParserTypeSolver javaParserTypeSolver,
                             final @NotNull GenericVisitor<List<T>, JavaParserTypeSolver> creator) {
         return node.accept(creator, javaParserTypeSolver);
+    }
+
+    // TODO: need some test
+    // TODO: Should be moved to project entity as it has connection with project context.
+    // TODO: need generalization
+    public @NotNull Optional<JavaMethod> methodByQualifiedNameIn(
+                                         final @NotNull Node node,
+                                         final @NotNull JavaParserTypeSolver javaParserTypeSolver,
+                                         final @NotNull String methodName) {
+        List<JavaMethod> list = allInnerEntitiesOf(node, javaParserTypeSolver, JavaMethod.creator);
+        for (JavaMethod method : list) {
+            if (method.qualifiedName().equals(methodName)) {
+                return Optional.of(method);
+            }
+        }
+
+        return Optional.empty();
     }
 }
