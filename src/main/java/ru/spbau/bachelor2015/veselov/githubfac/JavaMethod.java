@@ -1,5 +1,6 @@
 package ru.spbau.bachelor2015.veselov.githubfac;
 
+import com.github.javaparser.ast.Node;
 import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.ast.visitor.GenericListVisitorAdapter;
 import com.github.javaparser.ast.visitor.GenericVisitor;
@@ -10,7 +11,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
-public class JavaMethod {
+public class JavaMethod implements JavaClusterOfEntities {
     private final @NotNull JavaParserTypeSolver javaParserTypeSolver;
 
     private final @NotNull MethodDeclaration methodDeclaration;
@@ -36,6 +37,16 @@ public class JavaMethod {
 
         solvedMethodDeclaration = new JavaParserMethodDeclaration(methodDeclaration,
                                                                   javaParserTypeSolver);
+    }
+
+    @Override
+    public @NotNull Node clusterNode() {
+        return methodDeclaration;
+    }
+
+    @Override
+    public @NotNull JavaParserTypeSolver clusterTypeSolver() {
+        return javaParserTypeSolver;
     }
 
     public @NotNull String qualifiedName() {

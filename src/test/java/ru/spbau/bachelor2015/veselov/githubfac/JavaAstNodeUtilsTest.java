@@ -47,7 +47,8 @@ public class JavaAstNodeUtilsTest extends TestEnvironment {
             be able to deal with them.
         */
         assertThat(JavaAstNodeUtils.getInstance()
-                                   .allInnerEntitiesOf(unit, typeSolver, JavaMethod.creator)
+                                   .allInnerEntitiesOf(mockCluster(unit, typeSolver),
+                                                       JavaMethod.creator)
                                    .stream()
                                    .map(JavaMethod::qualifiedName)
                                    .collect(Collectors.toList()),
@@ -67,7 +68,8 @@ public class JavaAstNodeUtilsTest extends TestEnvironment {
         CompilationUnit unit = JavaParser.parse(file);
 
         assertThat(JavaAstNodeUtils.getInstance()
-                                   .allInnerEntitiesOf(unit, typeSolver, JavaField.creator)
+                                   .allInnerEntitiesOf(mockCluster(unit, typeSolver),
+                                                       JavaField.creator)
                                    .stream()
                                    .map(JavaField::simpleName)
                                    .collect(Collectors.toList()),
@@ -81,7 +83,8 @@ public class JavaAstNodeUtilsTest extends TestEnvironment {
         CompilationUnit unit = JavaParser.parse(file);
 
         assertThat(JavaAstNodeUtils.getInstance()
-                                   .allInnerEntitiesOf(unit, typeSolver, JavaLocalVariable.creator)
+                                   .allInnerEntitiesOf(mockCluster(unit, typeSolver),
+                                                       JavaLocalVariable.creator)
                                    .stream()
                                    .map(JavaLocalVariable::simpleName)
                                    .collect(Collectors.toList()),

@@ -74,20 +74,18 @@ public class JavaAstNodeUtils {
 
     // TODO: Should be moved to project entity as it has connection with project context.
     public <T> @NotNull List<T> allInnerEntitiesOf(
-                            final @NotNull Node node,
-                            final @NotNull JavaParserTypeSolver javaParserTypeSolver,
+                            final @NotNull JavaClusterOfEntities cluster,
                             final @NotNull GenericVisitor<List<T>, JavaParserTypeSolver> creator) {
-        return node.accept(creator, javaParserTypeSolver);
+        return cluster.clusterNode().accept(creator, cluster.clusterTypeSolver());
     }
 
     // TODO: need some test
     // TODO: Should be moved to project entity as it has connection with project context.
     // TODO: need generalization
     public @NotNull Optional<JavaMethod> methodByQualifiedNameIn(
-                                         final @NotNull Node node,
-                                         final @NotNull JavaParserTypeSolver javaParserTypeSolver,
+                                         final @NotNull JavaClusterOfEntities cluster,
                                          final @NotNull String methodName) {
-        List<JavaMethod> list = allInnerEntitiesOf(node, javaParserTypeSolver, JavaMethod.creator);
+        List<JavaMethod> list = allInnerEntitiesOf(cluster, JavaMethod.creator);
         for (JavaMethod method : list) {
             if (method.qualifiedName().equals(methodName)) {
                 return Optional.of(method);
