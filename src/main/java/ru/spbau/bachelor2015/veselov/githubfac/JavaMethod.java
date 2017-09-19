@@ -38,7 +38,7 @@ public class JavaMethod {
                                                                   javaParserTypeSolver);
     }
 
-    public @NotNull String getQualifiedName() {
+    public @NotNull String qualifiedName() {
         return solvedMethodDeclaration.getQualifiedName();
     }
 }

@@ -5,13 +5,11 @@ import com.github.javaparser.ast.Node;
 import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.ast.visitor.GenericVisitor;
 import com.github.javaparser.ast.visitor.GenericVisitorAdapter;
-import com.github.javaparser.ast.visitor.VoidVisitorAdapter;
 import com.github.javaparser.symbolsolver.resolution.typesolvers.JavaParserTypeSolver;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -26,6 +24,7 @@ public class JavaAstNodeUtils {
     }
 
     public @NotNull String textualAstOf(final @NotNull Node node) {
+        // TODO: rewrite with standard visitor which may have more proper way of traversing
         class TextBuilder {
             private static final int INDENT_INC_SIZE = 2;
 
@@ -85,7 +84,7 @@ public class JavaAstNodeUtils {
                 public @Nullable JavaMethod visit(final MethodDeclaration node, final Void arg) {
                     JavaMethod method = new JavaMethod(javaParserTypeSolver, node);
 
-                    if (method.getQualifiedName().equals(methodName)) {
+                    if (method.qualifiedName().equals(methodName)) {
                         return method;
                     }
 

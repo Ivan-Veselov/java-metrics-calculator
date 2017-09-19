@@ -13,6 +13,7 @@ import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
 
+// TODO: subdivide tests on different groups with different possible type classes, fields, etc.
 public class JavaAstNodeUtilsTest extends TestEnvironment {
     @Test
     public void textualAstOfTest() throws Exception {
@@ -48,7 +49,7 @@ public class JavaAstNodeUtilsTest extends TestEnvironment {
         assertThat(JavaAstNodeUtils.getInstance()
                                    .allInnerEntitiesOf(unit, typeSolver, JavaMethod.creator)
                                    .stream()
-                                   .map(JavaMethod::getQualifiedName)
+                                   .map(JavaMethod::qualifiedName)
                                    .collect(Collectors.toList()),
                 containsInAnyOrder("Interface.method0",
                                           "Methods.method1",
@@ -57,5 +58,19 @@ public class JavaAstNodeUtilsTest extends TestEnvironment {
                                           "Methods.method4",
                                           "Methods.InnerClass.method5",
                                           "HiddenClass.method6"));
+    }
+
+    @Test
+    public void allInnerFieldsOfTest() throws Exception {
+        File file = addSourceFileToProjectDir("/JavaClasses/Fields.java");
+        JavaParserTypeSolver typeSolver = getNewTypeSolver();
+        CompilationUnit unit = JavaParser.parse(file);
+
+        assertThat(JavaAstNodeUtils.getInstance()
+                                   .allInnerEntitiesOf(unit, typeSolver, JavaField.creator)
+                                   .stream()
+                                   .map(JavaField::simpleName)
+                                   .collect(Collectors.toList()),
+                   containsInAnyOrder("field1", "field2"));
     }
 }
