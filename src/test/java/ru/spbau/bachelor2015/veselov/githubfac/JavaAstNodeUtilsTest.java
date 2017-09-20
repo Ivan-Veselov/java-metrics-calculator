@@ -15,10 +15,10 @@ import static org.hamcrest.Matchers.is;
 public class JavaAstNodeUtilsTest extends TestEnvironment {
     @Test
     public void textualAstOfTest() throws Exception {
-        File file = addSourceFileToProjectDir("/JavaClasses/ClassToPrint.java");
+        File file = addSourceFileToProjectDir("/JavaClasses/PrintMe.java");
         CompilationUnit unit = JavaParser.parse(file);
 
         assertThat(JavaAstNodeUtils.getInstance().textualAstOf(unit),
-                is(equalTo(astFrom("/AST/ClassToPrint"))));
+                is(equalTo(astFrom("/AST/PrintMe"))));
     }
 }

@@ -1,6 +1,6 @@
 CompilationUnit
   ClassOrInterfaceDeclaration
-    SimpleName(ClassToPrint)
+    SimpleName(PrintMe)
     MethodDeclaration
       SimpleName(gcd)
       Parameter
