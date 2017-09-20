@@ -12,7 +12,10 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
+// TODO: all this methods should be put in some more appropriate place.
 public class JavaAstNodeUtils {
     private static JavaAstNodeUtils ourInstance = new JavaAstNodeUtils();
 
@@ -59,20 +62,6 @@ public class JavaAstNodeUtils {
         return new TextBuilder(node).getText();
     }
 
-    public int codeLinesNumberIn(final @NotNull Node node) {
-        int lines = 1;
-
-        // TODO: throw an exception if null?
-        for (JavaToken token : node.getTokenRange().get()) {
-            if (token.getCategory().isEndOfLine()) {
-                lines++;
-            }
-        }
-
-        return lines;
-    }
-
-    // TODO: Should be moved to project entity as it has connection with project context.
     public <T> @NotNull List<T> allInnerEntitiesOf(
                             final @NotNull JavaClusterOfEntities cluster,
                             final @NotNull GenericVisitor<List<T>, JavaParserTypeSolver> creator) {
@@ -80,19 +69,13 @@ public class JavaAstNodeUtils {
     }
 
     // TODO: need some test
-    // TODO: Should be moved to project entity as it has connection with project context.
     // TODO: need generalization
-    // TODO: for methods this function should return a list because of overloading
-    public @NotNull Optional<JavaMethod> methodByQualifiedNameIn(
+    public @NotNull List<JavaMethod> methodByQualifiedNameIn(
                                          final @NotNull JavaClusterOfEntities cluster,
                                          final @NotNull String methodName) {
-        List<JavaMethod> list = allInnerEntitiesOf(cluster, JavaMethod.creator);
-        for (JavaMethod method : list) {
-            if (method.qualifiedName().equals(methodName)) {
-                return Optional.of(method);
-            }
-        }
-
-        return Optional.empty();
+        return allInnerEntitiesOf(cluster, JavaMethod.creator)
+                    .stream()
+                    .filter(m -> m.qualifiedName().equals(methodName))
+                    .collect(Collectors.toList());
     }
 }
