@@ -20,7 +20,10 @@ public class JavaField {
             @Override
             public List<JavaField> visit(final FieldDeclaration n,
                                          final JavaParserTypeSolver javaParserTypeSolver) {
-                List<JavaField> list = new ArrayList<>();
+                List<JavaField> list = super.visit(n, javaParserTypeSolver);
+                if (list == null) {
+                    list = new ArrayList<>();
+                }
 
                 for (VariableDeclarator declarator : n.getVariables()) {
                     list.add(new JavaField(javaParserTypeSolver, declarator));

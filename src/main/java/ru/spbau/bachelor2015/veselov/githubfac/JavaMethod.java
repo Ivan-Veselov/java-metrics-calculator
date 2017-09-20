@@ -23,9 +23,12 @@ public class JavaMethod implements JavaClusterOfEntities {
             @Override
             public List<JavaMethod> visit(final MethodDeclaration n,
                                           final JavaParserTypeSolver javaParserTypeSolver) {
-                List<JavaMethod> list = new ArrayList<>();
-                list.add(new JavaMethod(javaParserTypeSolver, n));
+                List<JavaMethod> list = super.visit(n, javaParserTypeSolver);
+                if (list == null) {
+                    list = new ArrayList<>();
+                }
 
+                list.add(new JavaMethod(javaParserTypeSolver, n));
                 return list;
             }
         };

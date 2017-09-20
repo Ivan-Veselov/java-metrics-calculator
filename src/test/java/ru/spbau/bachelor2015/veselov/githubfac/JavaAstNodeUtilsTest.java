@@ -14,6 +14,7 @@ import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
 
 // TODO: subdivide tests on different groups with different possible classes type, fields type, etc.
+// TODO: add test with unsolved name of anonymous class method.
 public class JavaAstNodeUtilsTest extends TestEnvironment {
     @Test
     public void textualAstOfTest() throws Exception {
@@ -39,13 +40,6 @@ public class JavaAstNodeUtilsTest extends TestEnvironment {
         JavaParserTypeSolver typeSolver = getNewTypeSolver();
         CompilationUnit unit = JavaParser.parse(file);
 
-        /*
-            TODO: Invalid test.
-            Actually two method (one of anonymous class and one of function local class, both are
-            situated inside function body) are missed. Seems like it's a problem of JavaParser.
-            If to go through nodes manually, this methods will be found but symbol solver won't
-            be able to deal with them.
-        */
         assertThat(JavaAstNodeUtils.getInstance()
                                    .allInnerEntitiesOf(mockCluster(unit, typeSolver),
                                                        JavaMethod.creator)
@@ -58,7 +52,8 @@ public class JavaAstNodeUtilsTest extends TestEnvironment {
                                           "Methods.method3",
                                           "Methods.method4",
                                           "Methods.InnerClass.method5",
-                                          "HiddenClass.method6"));
+                                          "HiddenClass.method6",
+                                          "HiddenClass.MethodClass.method7"));
     }
 
     @Test

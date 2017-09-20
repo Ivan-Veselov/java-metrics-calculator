@@ -9,11 +9,6 @@ abstract class Methods {
     }
 
     private int method2() {
-        return new Interface() {
-            public int method0() {
-                return 1 - 1;
-            }
-        }.method0();
         return 0;
     }
 

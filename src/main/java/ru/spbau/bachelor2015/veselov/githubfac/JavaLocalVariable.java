@@ -22,7 +22,10 @@ public class JavaLocalVariable {
             @Override
             public List<JavaLocalVariable> visit(final VariableDeclarationExpr n,
                                                  final JavaParserTypeSolver javaParserTypeSolver) {
-                List<JavaLocalVariable> list = new ArrayList<>();
+                List<JavaLocalVariable> list = super.visit(n, javaParserTypeSolver);
+                if (list == null) {
+                    list = new ArrayList<>();
+                }
 
                 for (VariableDeclarator declarator : n.getVariables()) {
                     list.add(new JavaLocalVariable(javaParserTypeSolver, declarator));
