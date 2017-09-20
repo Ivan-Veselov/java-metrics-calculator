@@ -15,6 +15,7 @@ import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
 
+// TODO: add test with unsolved name of anonymous class method.
 public class JavaMethodTest extends TestEnvironment {
     @Test
     public void testAllInnerMethodsOf() throws Exception {

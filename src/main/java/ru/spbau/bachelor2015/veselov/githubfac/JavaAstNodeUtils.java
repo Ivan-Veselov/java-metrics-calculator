@@ -20,42 +20,7 @@ public class JavaAstNodeUtils {
     private JavaAstNodeUtils() {
     }
 
-    public @NotNull String textualAstOf(final @NotNull Node node) {
-        // TODO: rewrite with standard visitor which may have more proper way of traversing
-        class TextBuilder {
-            private static final int INDENT_INC_SIZE = 2;
-
-            private final @NotNull StringBuilder stringBuilder = new StringBuilder();
-
-            public TextBuilder(final @NotNull Node node) {
-                traverse(node, 0);
-            }
-
-            public @NotNull String getText() {
-                return stringBuilder.toString();
-            }
-
-            private void traverse(final @NotNull Node node, final int indent) {
-                stringBuilder.append(StringUtils.repeat(' ', indent))
-                        .append(node.getClass().getSimpleName());
-
-                if (node.getChildNodes().isEmpty()) {
-                    stringBuilder.append('(')
-                            .append(node)
-                            .append(')');
-                }
-
-                stringBuilder.append('\n');
-
-                for (Node child : node.getChildNodes()) {
-                    traverse(child, indent + INDENT_INC_SIZE);
-                }
-            }
-        }
-
-        return new TextBuilder(node).getText();
-    }
-
+    // TODO: make entities creators which will be passed to this method
     public <T> @NotNull List<T> allInnerEntitiesOf(
                             final @NotNull JavaClusterOfEntities cluster,
                             final @NotNull GenericVisitor<List<T>, JavaParserTypeSolver> creator) {

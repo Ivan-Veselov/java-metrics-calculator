@@ -55,4 +55,26 @@ public class TestEnvironment {
 
         return cluster;
     }
+
+    protected static class DullJavaClusterOfEntities implements JavaClusterOfEntities {
+        private final Node node;
+
+        private final JavaParserTypeSolver javaParserTypeSolver;
+
+        public DullJavaClusterOfEntities(final Node node,
+                                         final JavaParserTypeSolver javaParserTypeSolver) {
+            this.node = node;
+            this.javaParserTypeSolver = javaParserTypeSolver;
+        }
+
+        @Override
+        public @NotNull Node clusterNode() {
+            return node;
+        }
+
+        @Override
+        public @NotNull JavaParserTypeSolver clusterTypeSolver() {
+            return javaParserTypeSolver;
+        }
+    }
 }
