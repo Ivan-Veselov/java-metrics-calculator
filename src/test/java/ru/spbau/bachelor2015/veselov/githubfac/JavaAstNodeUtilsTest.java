@@ -2,7 +2,6 @@ package ru.spbau.bachelor2015.veselov.githubfac;
 
 import com.github.javaparser.JavaParser;
 import com.github.javaparser.ast.CompilationUnit;
-import com.github.javaparser.symbolsolver.resolution.typesolvers.JavaParserTypeSolver;
 import org.junit.Test;
 
 import java.io.File;
@@ -21,14 +20,5 @@ public class JavaAstNodeUtilsTest extends TestEnvironment {
 
         assertThat(JavaAstNodeUtils.getInstance().textualAstOf(unit),
                 is(equalTo(astFrom("/AST/ClassToPrint"))));
-    }
-
-    @Test
-    public void numberOfCodeLinesInTest() throws Exception {
-        File file = addSourceFileToProjectDir("/JavaClasses/ClassLength.java");
-        CompilationUnit unit = JavaParser.parse(file);
-
-        assertThat(JavaAstNodeUtils.getInstance().codeLinesNumberIn(unit),
-                                                                        is(equalTo(7)));
     }
 }

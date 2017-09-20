@@ -14,7 +14,7 @@ import static org.hamcrest.Matchers.containsInAnyOrder;
 
 public class JavaFieldTest extends TestEnvironment {
     @Test
-    public void testAllInnerMethodsOf() throws Exception {
+    public void testAllInnerFieldsOf() throws Exception {
         testAllInnerFieldsOf("/JavaClasses/SimpleClass.java",
                 "f1", "f1");
 
@@ -31,6 +31,7 @@ public class JavaFieldTest extends TestEnvironment {
     }
 
     // TODO: this method is very similar to testAllInnerMethodsOf
+    // TODO: create matcher
     private void testAllInnerFieldsOf(final @NotNull String fileName,
                                       final @NotNull String... expectedFields) throws Exception {
         File file = addSourceFileToProjectDir(fileName);

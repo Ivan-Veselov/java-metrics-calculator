@@ -32,6 +32,7 @@ public class JavaLocalVariableTest extends TestEnvironment {
     }
 
     // TODO: this method is very similar to testAllInnerMethodsOf
+    // TODO: create matcher
     private void testAllInnerLocalVariablesOf(
                               final @NotNull String fileName,
                               final @NotNull String... expectedLocalVariables) throws Exception {

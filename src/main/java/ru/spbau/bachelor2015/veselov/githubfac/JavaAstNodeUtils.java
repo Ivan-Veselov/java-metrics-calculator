@@ -1,18 +1,12 @@
 package ru.spbau.bachelor2015.veselov.githubfac;
 
-import com.github.javaparser.JavaToken;
 import com.github.javaparser.ast.Node;
-import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.ast.visitor.GenericVisitor;
-import com.github.javaparser.ast.visitor.GenericVisitorAdapter;
 import com.github.javaparser.symbolsolver.resolution.typesolvers.JavaParserTypeSolver;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 // TODO: all this methods should be put in some more appropriate place.
@@ -68,7 +62,6 @@ public class JavaAstNodeUtils {
         return cluster.clusterNode().accept(creator, cluster.clusterTypeSolver());
     }
 
-    // TODO: need some test
     // TODO: need generalization
     public @NotNull List<JavaMethod> methodByQualifiedNameIn(
                                          final @NotNull JavaClusterOfEntities cluster,

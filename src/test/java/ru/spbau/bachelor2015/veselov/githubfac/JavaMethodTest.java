@@ -7,10 +7,13 @@ import org.jetbrains.annotations.NotNull;
 import org.junit.Test;
 
 import java.io.File;
+import java.util.List;
 import java.util.stream.Collectors;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsInAnyOrder;
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.is;
 
 public class JavaMethodTest extends TestEnvironment {
     @Test
@@ -73,6 +76,47 @@ public class JavaMethodTest extends TestEnvironment {
                                 "Interface.mo");
     }
 
+    @Test
+    public void testNumberOfCodeLines() throws Exception {
+        File file = addSourceFileToProjectDir("/JavaClasses/MeasureMyMethodsLength.java");
+        JavaParserTypeSolver typeSolver = getNewTypeSolver();
+        CompilationUnit unit = JavaParser.parse(file);
+
+        JavaClusterOfEntities cluster = mockCluster(unit, typeSolver);
+
+        testNumberOfCodeLines(cluster,
+                  "MeasureMyMethodsLength.m1",
+          11);
+
+        testNumberOfCodeLines(cluster,
+                  "MeasureMyMethodsLength.m2",
+          7);
+
+        testNumberOfCodeLines(cluster,
+                  "MeasureMyMethodsLength.m3",
+          5);
+
+        testNumberOfCodeLines(cluster,
+                  "MeasureMyMethodsLength.m4",
+          3);
+
+        testNumberOfCodeLines(cluster,
+                  "MeasureMyMethodsLength.m5",
+          1);
+    }
+
+    // TODO: create matcher
+    private void testNumberOfCodeLines(final @NotNull JavaClusterOfEntities cluster,
+                                       final @NotNull String methodName,
+                                       final int expectedNumberOfLines) throws Exception {
+        List<JavaMethod> list = JavaAstNodeUtils.getInstance()
+                                                .methodByQualifiedNameIn(cluster, methodName);
+
+        assertThat(list.size(), is(equalTo(1)));
+        assertThat(list.get(0).numberOfCodeLines(), is(equalTo(expectedNumberOfLines)));
+    }
+
+    // TODO: create matcher
     private void testAllInnerMethodsOf(final @NotNull String fileName,
                                       final @NotNull String... expectedMethods) throws Exception {
         File file = addSourceFileToProjectDir(fileName);

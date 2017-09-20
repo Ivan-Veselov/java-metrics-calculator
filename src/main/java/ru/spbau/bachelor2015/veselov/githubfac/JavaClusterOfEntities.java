@@ -1,5 +1,6 @@
 package ru.spbau.bachelor2015.veselov.githubfac;
 
+import com.github.javaparser.JavaToken;
 import com.github.javaparser.ast.Node;
 import com.github.javaparser.symbolsolver.resolution.typesolvers.JavaParserTypeSolver;
 import org.jetbrains.annotations.NotNull;
@@ -19,4 +20,20 @@ public interface JavaClusterOfEntities {
      * Returns cluster project context.
      */
     @NotNull JavaParserTypeSolver clusterTypeSolver();
+
+    /**
+     * Return number of code lines which cluster consists of.
+     */
+    default int numberOfCodeLines() {
+        int lines = 1;
+
+        // TODO: throw an exception if null?
+        for (JavaToken token : clusterNode().getTokenRange().get()) {
+            if (token.getCategory().isEndOfLine()) {
+                lines++;
+            }
+        }
+
+        return lines;
+    }
 }
