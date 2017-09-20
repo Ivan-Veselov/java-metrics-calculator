@@ -34,7 +34,7 @@ public class JavaFieldTest extends TestEnvironment {
     // TODO: create matcher
     private void testAllInnerFieldsOf(final @NotNull String fileName,
                                       final @NotNull String... expectedFields) throws Exception {
-        File file = addSourceFileToProjectDir(fileName);
+        File file = addToProjectDir(fileName);
         JavaParserTypeSolver typeSolver = getNewTypeSolver();
         CompilationUnit unit = JavaParser.parse(file);
 

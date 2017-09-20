@@ -78,7 +78,7 @@ public class JavaMethodTest extends TestEnvironment {
 
     @Test
     public void testNumberOfCodeLines() throws Exception {
-        File file = addSourceFileToProjectDir("/JavaClasses/MeasureMyMethodsLength.java");
+        File file = addToProjectDir("/JavaClasses/MeasureMyMethodsLength.java");
         JavaParserTypeSolver typeSolver = getNewTypeSolver();
         CompilationUnit unit = JavaParser.parse(file);
 
@@ -119,7 +119,7 @@ public class JavaMethodTest extends TestEnvironment {
     // TODO: create matcher
     private void testAllInnerMethodsOf(final @NotNull String fileName,
                                       final @NotNull String... expectedMethods) throws Exception {
-        File file = addSourceFileToProjectDir(fileName);
+        File file = addToProjectDir(fileName);
         JavaParserTypeSolver typeSolver = getNewTypeSolver();
         CompilationUnit unit = JavaParser.parse(file);
 

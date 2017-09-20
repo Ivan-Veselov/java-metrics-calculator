@@ -36,7 +36,7 @@ public class JavaLocalVariableTest extends TestEnvironment {
     private void testAllInnerLocalVariablesOf(
                               final @NotNull String fileName,
                               final @NotNull String... expectedLocalVariables) throws Exception {
-        File file = addSourceFileToProjectDir(fileName);
+        File file = addToProjectDir(fileName);
         JavaParserTypeSolver typeSolver = getNewTypeSolver();
         CompilationUnit unit = JavaParser.parse(file);
 

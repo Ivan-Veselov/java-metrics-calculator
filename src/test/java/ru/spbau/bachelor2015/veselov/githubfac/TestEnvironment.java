@@ -20,9 +20,15 @@ public class TestEnvironment {
     @Rule
     public TemporaryFolder projectFolder = new TemporaryFolder();
 
-    protected @NotNull File addSourceFileToProjectDir(final @NotNull String fileName)
-                                                                                throws Exception {
-        Path pathToFile = Paths.get(getClass().getResource(fileName).getFile());
+    protected @NotNull File addToProjectDir(final @NotNull String location) throws Exception {
+        Path pathToFile = Paths.get(getClass().getResource(location).getFile());
+        File file = pathToFile.toFile();
+
+        if (file.isDirectory()) {
+            File newDir = projectFolder.newFolder(pathToFile.getFileName().toString());
+            FileUtils.copyDirectory(file, newDir);
+            return newDir;
+        }
 
         File newFile = projectFolder.newFile(pathToFile.getFileName().toString());
         FileUtils.copyFile(pathToFile.toFile(), newFile);
