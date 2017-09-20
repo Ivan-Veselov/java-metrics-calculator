@@ -35,28 +35,6 @@ public class JavaAstNodeUtilsTest extends TestEnvironment {
     }
 
     @Test
-    public void allInnerMethodsOfTest() throws Exception {
-        File file = addSourceFileToProjectDir("/JavaClasses/Methods.java");
-        JavaParserTypeSolver typeSolver = getNewTypeSolver();
-        CompilationUnit unit = JavaParser.parse(file);
-
-        assertThat(JavaAstNodeUtils.getInstance()
-                                   .allInnerEntitiesOf(mockCluster(unit, typeSolver),
-                                                       JavaMethod.creator)
-                                   .stream()
-                                   .map(JavaMethod::qualifiedName)
-                                   .collect(Collectors.toList()),
-                containsInAnyOrder("Interface.method0",
-                                          "Methods.method1",
-                                          "Methods.method2",
-                                          "Methods.method3",
-                                          "Methods.method4",
-                                          "Methods.InnerClass.method5",
-                                          "HiddenClass.method6",
-                                          "HiddenClass.MethodClass.method7"));
-    }
-
-    @Test
     public void allInnerFieldsOfTest() throws Exception {
         File file = addSourceFileToProjectDir("/JavaClasses/Variables.java");
         JavaParserTypeSolver typeSolver = getNewTypeSolver();
