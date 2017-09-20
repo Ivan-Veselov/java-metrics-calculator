@@ -35,21 +35,6 @@ public class JavaAstNodeUtilsTest extends TestEnvironment {
     }
 
     @Test
-    public void allInnerFieldsOfTest() throws Exception {
-        File file = addSourceFileToProjectDir("/JavaClasses/Variables.java");
-        JavaParserTypeSolver typeSolver = getNewTypeSolver();
-        CompilationUnit unit = JavaParser.parse(file);
-
-        assertThat(JavaAstNodeUtils.getInstance()
-                                   .allInnerEntitiesOf(mockCluster(unit, typeSolver),
-                                                       JavaField.creator)
-                                   .stream()
-                                   .map(JavaField::simpleName)
-                                   .collect(Collectors.toList()),
-                   containsInAnyOrder("field1", "field2"));
-    }
-
-    @Test
     public void allInnerLocalVariablesOfTest() throws Exception {
         File file = addSourceFileToProjectDir("/JavaClasses/Variables.java");
         JavaParserTypeSolver typeSolver = getNewTypeSolver();

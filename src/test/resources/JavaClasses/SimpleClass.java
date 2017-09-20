@@ -1,4 +1,6 @@
 class SimpleClass {
+    int f1;
+
     int m1() {
         return 0;
     }
@@ -21,6 +23,8 @@ class SimpleClass {
 }
 
 class HiddenClass {
+    int f1;
+
     int m1() {
         return 0;
     }

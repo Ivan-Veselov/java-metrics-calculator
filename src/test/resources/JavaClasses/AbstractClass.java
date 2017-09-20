@@ -1,4 +1,6 @@
 abstract class AbstractClass {
+    int f1;
+
     abstract int m1();
 
     abstract int m2(int a1);

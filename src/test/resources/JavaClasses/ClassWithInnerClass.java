@@ -1,4 +1,6 @@
 class ClassWithInnerClass {
+    int f1;
+
     int m1() {
         return 0;
     }
@@ -20,6 +22,8 @@ class ClassWithInnerClass {
     }
 
     class InnerClass {
+        int f1;
+
         int m1() {
             return 0;
         }

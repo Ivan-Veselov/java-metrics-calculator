@@ -1,6 +1,10 @@
 class ClassWithLocalClass {
+    int f1;
+
     int m0() {
         class LocalClass {
+            int f1;
+
             int m1() {
                 return 0;
             }

@@ -10,6 +10,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
+// TODO: might be a good ability to receive field fully qualified name.
 public class JavaField {
     private final @NotNull JavaParserTypeSolver javaParserTypeSolver;
 
