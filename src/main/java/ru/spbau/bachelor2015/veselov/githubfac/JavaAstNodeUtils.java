@@ -82,6 +82,7 @@ public class JavaAstNodeUtils {
     // TODO: need some test
     // TODO: Should be moved to project entity as it has connection with project context.
     // TODO: need generalization
+    // TODO: for methods this function should return a list because of overloading
     public @NotNull Optional<JavaMethod> methodByQualifiedNameIn(
                                          final @NotNull JavaClusterOfEntities cluster,
                                          final @NotNull String methodName) {

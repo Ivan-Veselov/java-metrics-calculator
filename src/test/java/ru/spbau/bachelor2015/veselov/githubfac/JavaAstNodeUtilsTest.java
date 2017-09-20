@@ -6,10 +6,8 @@ import com.github.javaparser.symbolsolver.resolution.typesolvers.JavaParserTypeS
 import org.junit.Test;
 
 import java.io.File;
-import java.util.stream.Collectors;
 
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
 
@@ -32,20 +30,5 @@ public class JavaAstNodeUtilsTest extends TestEnvironment {
 
         assertThat(JavaAstNodeUtils.getInstance().codeLinesNumberIn(unit),
                                                                         is(equalTo(7)));
-    }
-
-    @Test
-    public void allInnerLocalVariablesOfTest() throws Exception {
-        File file = addSourceFileToProjectDir("/JavaClasses/Variables.java");
-        JavaParserTypeSolver typeSolver = getNewTypeSolver();
-        CompilationUnit unit = JavaParser.parse(file);
-
-        assertThat(JavaAstNodeUtils.getInstance()
-                                   .allInnerEntitiesOf(mockCluster(unit, typeSolver),
-                                                       JavaLocalVariable.creator)
-                                   .stream()
-                                   .map(JavaLocalVariable::simpleName)
-                                   .collect(Collectors.toList()),
-                containsInAnyOrder("c", "d"));
     }
 }

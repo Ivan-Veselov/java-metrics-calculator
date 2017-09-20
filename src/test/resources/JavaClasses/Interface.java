@@ -6,6 +6,9 @@ interface Interface {
     int m3(int a1, int a2);
 
     default int m4() {
+        int l1, l2;
+        int l3;
+
         return 0;
     }
 

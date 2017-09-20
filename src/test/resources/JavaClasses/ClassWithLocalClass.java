@@ -2,10 +2,16 @@ class ClassWithLocalClass {
     int f1;
 
     int m0() {
+        int l1, l2;
+        int l3;
+
         class LocalClass {
             int f1;
 
             int m1() {
+                int l1, l2;
+                int l3;
+
                 return 0;
             }
 
