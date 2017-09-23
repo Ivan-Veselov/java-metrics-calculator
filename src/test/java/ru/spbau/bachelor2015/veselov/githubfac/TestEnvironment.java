@@ -45,17 +45,6 @@ public class TestEnvironment {
         return FileUtils.readFileToString(pathToFile.toFile(), (Charset) null);
     }
 
-    protected @NotNull JavaClusterOfEntities mockCluster(
-                                     final @NotNull Node node,
-                                     final @NotNull JavaParserTypeSolver javaParserTypeSolver) {
-        JavaClusterOfEntities cluster = mock(JavaClusterOfEntities.class);
-
-        when(cluster.clusterNode()).thenReturn(node);
-        when(cluster.clusterTypeSolver()).thenReturn(javaParserTypeSolver);
-
-        return cluster;
-    }
-
     protected static class DullJavaClusterOfEntities implements JavaClusterOfEntities {
         private final Node node;
 

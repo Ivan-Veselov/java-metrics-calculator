@@ -2,9 +2,13 @@ package ru.spbau.bachelor2015.veselov.githubfac;
 
 import com.github.javaparser.JavaToken;
 import com.github.javaparser.ast.Node;
+import com.github.javaparser.ast.visitor.GenericVisitor;
 import com.github.javaparser.symbolsolver.resolution.typesolvers.JavaParserTypeSolver;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * An interface which represents a Java entity that stores other Java entities inside itself.
@@ -62,7 +66,36 @@ public interface JavaClusterOfEntities {
     }
 
     /**
-     * Return number of code lines which cluster consists of.
+     * Runs a visitor that creates entities on this cluster and returns a resulting list.
+     *
+     * @param creator an AST visitor which creates a list of specific entities that are inside this
+     *                cluster
+     * @param <T> a type of entities to create.
+     * @return a list that was constructed by creator.
+     */
+    // TODO: make entities creators type which will be a type of this method argument
+    default <T> @NotNull List<T> allInnerEntities(
+                            final @NotNull GenericVisitor<List<T>, JavaParserTypeSolver> creator) {
+        return clusterNode().accept(creator, clusterTypeSolver());
+    }
+
+    /**
+     * Finds and returns all overloads of a method with a given qualified name that are inside this
+     * cluster.
+     *
+     * @param methodName a qualified name of a method.
+     * @return a list of all methods with given name that are inside this cluster.
+     */
+    // TODO: need generalization
+    default @NotNull List<JavaMethod> allMethodsByQualifiedName(final @NotNull String methodName) {
+        return allInnerEntities(JavaMethod.creator)
+                .stream()
+                .filter(m -> m.qualifiedName().equals(methodName))
+                .collect(Collectors.toList());
+    }
+
+    /**
+     * Returns number of code lines which cluster consists of.
      */
     default int numberOfCodeLines() {
         int lines = 1;

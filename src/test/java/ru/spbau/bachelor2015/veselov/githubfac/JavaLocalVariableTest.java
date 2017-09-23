@@ -14,35 +14,34 @@ import static org.hamcrest.Matchers.containsInAnyOrder;
 
 public class JavaLocalVariableTest extends TestEnvironment {
     @Test
-    public void testAllInnerLocalVariablesOf() throws Exception {
-        testAllInnerLocalVariablesOf("/JavaClasses/SimpleClass.java",
+    public void testAllInnerLocalVariables() throws Exception {
+        testAllInnerLocalVariables("/JavaClasses/SimpleClass.java",
                 "l1", "l2", "l3", "l1", "l2", "l3");
 
-        testAllInnerLocalVariablesOf("/JavaClasses/AbstractClass.java",
+        testAllInnerLocalVariables("/JavaClasses/AbstractClass.java",
                 "l1", "l2", "l3");
 
-        testAllInnerLocalVariablesOf("/JavaClasses/ClassWithInnerClass.java",
+        testAllInnerLocalVariables("/JavaClasses/ClassWithInnerClass.java",
                 "l1", "l2", "l3", "l1", "l2", "l3");
 
-        testAllInnerLocalVariablesOf("/JavaClasses/ClassWithLocalClass.java",
+        testAllInnerLocalVariables("/JavaClasses/ClassWithLocalClass.java",
                 "l1", "l2", "l3", "l1", "l2", "l3");
 
-        testAllInnerLocalVariablesOf("/JavaClasses/Interface.java",
+        testAllInnerLocalVariables("/JavaClasses/Interface.java",
                 "l1", "l2", "l3");
     }
 
-    // TODO: this method is very similar to testAllInnerMethodsOf
+    // TODO: this method is very similar to testAllInnerMethods
     // TODO: create matcher
-    private void testAllInnerLocalVariablesOf(
+    private void testAllInnerLocalVariables(
                               final @NotNull String fileName,
                               final @NotNull String... expectedLocalVariables) throws Exception {
         File file = addToProjectDir(fileName);
         JavaParserTypeSolver typeSolver = getNewTypeSolver();
         CompilationUnit unit = JavaParser.parse(file);
 
-        assertThat(JavaAstNodeUtils.getInstance()
-                        .allInnerEntitiesOf(mockCluster(unit, typeSolver),
-                                            JavaLocalVariable.creator)
+        assertThat(new DullJavaClusterOfEntities(unit, typeSolver)
+                        .allInnerEntities(JavaLocalVariable.creator)
                         .stream()
                         .map(JavaLocalVariable::simpleName)
                         .collect(Collectors.toList()),

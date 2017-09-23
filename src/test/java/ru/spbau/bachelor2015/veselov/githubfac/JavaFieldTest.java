@@ -14,33 +14,32 @@ import static org.hamcrest.Matchers.containsInAnyOrder;
 
 public class JavaFieldTest extends TestEnvironment {
     @Test
-    public void testAllInnerFieldsOf() throws Exception {
-        testAllInnerFieldsOf("/JavaClasses/SimpleClass.java",
+    public void testAllInnerFields() throws Exception {
+        testAllInnerFields("/JavaClasses/SimpleClass.java",
                 "f1", "f1");
 
-        testAllInnerFieldsOf("/JavaClasses/AbstractClass.java",
+        testAllInnerFields("/JavaClasses/AbstractClass.java",
                 "f1");
 
-        testAllInnerFieldsOf("/JavaClasses/ClassWithInnerClass.java",
+        testAllInnerFields("/JavaClasses/ClassWithInnerClass.java",
                 "f1", "f1");
 
-        testAllInnerFieldsOf("/JavaClasses/ClassWithLocalClass.java",
+        testAllInnerFields("/JavaClasses/ClassWithLocalClass.java",
                 "f1", "f1");
 
-        testAllInnerFieldsOf("/JavaClasses/Interface.java");
+        testAllInnerFields("/JavaClasses/Interface.java");
     }
 
-    // TODO: this method is very similar to testAllInnerMethodsOf
+    // TODO: this method is very similar to testAllInnerMethods
     // TODO: create matcher
-    private void testAllInnerFieldsOf(final @NotNull String fileName,
-                                      final @NotNull String... expectedFields) throws Exception {
+    private void testAllInnerFields(final @NotNull String fileName,
+                                    final @NotNull String... expectedFields) throws Exception {
         File file = addToProjectDir(fileName);
         JavaParserTypeSolver typeSolver = getNewTypeSolver();
         CompilationUnit unit = JavaParser.parse(file);
 
-        assertThat(JavaAstNodeUtils.getInstance()
-                        .allInnerEntitiesOf(mockCluster(unit, typeSolver),
-                                            JavaField.creator)
+        assertThat(new DullJavaClusterOfEntities(unit, typeSolver)
+                        .allInnerEntities(JavaField.creator)
                         .stream()
                         .map(JavaField::simpleName)
                         .collect(Collectors.toList()),

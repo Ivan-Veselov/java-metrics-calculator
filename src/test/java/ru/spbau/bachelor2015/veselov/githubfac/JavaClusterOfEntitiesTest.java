@@ -13,7 +13,7 @@ import static org.hamcrest.Matchers.is;
 
 public class JavaClusterOfEntitiesTest extends TestEnvironment {
     @Test
-    public void textualAstOfTest() throws Exception {
+    public void textualAstTest() throws Exception {
         File file = addToProjectDir("/JavaClasses/PrintMe.java");
         JavaParserTypeSolver javaParserTypeSolver = getNewTypeSolver();
         CompilationUnit unit = JavaParser.parse(file);

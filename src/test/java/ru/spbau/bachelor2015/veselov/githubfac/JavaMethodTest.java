@@ -18,8 +18,8 @@ import static org.hamcrest.Matchers.is;
 // TODO: add test with unsolved name of anonymous class method.
 public class JavaMethodTest extends TestEnvironment {
     @Test
-    public void testAllInnerMethodsOf() throws Exception {
-        testAllInnerMethodsOf("/JavaClasses/SimpleClass.java",
+    public void testAllInnerMethods() throws Exception {
+        testAllInnerMethods("/JavaClasses/SimpleClass.java",
            "SimpleClass.m1",
                            "SimpleClass.m2",
                            "SimpleClass.m3",
@@ -31,7 +31,7 @@ public class JavaMethodTest extends TestEnvironment {
                            "HiddenClass.mo",
                            "HiddenClass.mo");
 
-        testAllInnerMethodsOf("/JavaClasses/AbstractClass.java",
+        testAllInnerMethods("/JavaClasses/AbstractClass.java",
                 "AbstractClass.m1",
                                 "AbstractClass.m2",
                                 "AbstractClass.m3",
@@ -41,7 +41,7 @@ public class JavaMethodTest extends TestEnvironment {
                                 "AbstractClass.mo",
                                 "AbstractClass.mo");
 
-        testAllInnerMethodsOf("/JavaClasses/ClassWithInnerClass.java",
+        testAllInnerMethods("/JavaClasses/ClassWithInnerClass.java",
                 "ClassWithInnerClass.m1",
                                 "ClassWithInnerClass.m2",
                                 "ClassWithInnerClass.m3",
@@ -53,7 +53,7 @@ public class JavaMethodTest extends TestEnvironment {
                                 "ClassWithInnerClass.InnerClass.mo",
                                 "ClassWithInnerClass.InnerClass.mo");
 
-        testAllInnerMethodsOf("/JavaClasses/ClassWithLocalClass.java",
+        testAllInnerMethods("/JavaClasses/ClassWithLocalClass.java",
                 "ClassWithLocalClass.m0",
                                 "ClassWithLocalClass.m1",
                                 "ClassWithLocalClass.m2",
@@ -66,7 +66,7 @@ public class JavaMethodTest extends TestEnvironment {
                                 "ClassWithLocalClass.LocalClass.mo",
                                 "ClassWithLocalClass.LocalClass.mo");
 
-        testAllInnerMethodsOf("/JavaClasses/Interface.java",
+        testAllInnerMethods("/JavaClasses/Interface.java",
                 "Interface.m1",
                                 "Interface.m2",
                                 "Interface.m3",
@@ -83,7 +83,7 @@ public class JavaMethodTest extends TestEnvironment {
         JavaParserTypeSolver typeSolver = getNewTypeSolver();
         CompilationUnit unit = JavaParser.parse(file);
 
-        JavaClusterOfEntities cluster = mockCluster(unit, typeSolver);
+        JavaClusterOfEntities cluster = new DullJavaClusterOfEntities(unit, typeSolver);
 
         testNumberOfCodeLines(cluster,
                   "MeasureMyMethodsLength.m1",
@@ -110,23 +110,21 @@ public class JavaMethodTest extends TestEnvironment {
     private void testNumberOfCodeLines(final @NotNull JavaClusterOfEntities cluster,
                                        final @NotNull String methodName,
                                        final int expectedNumberOfLines) throws Exception {
-        List<JavaMethod> list = JavaAstNodeUtils.getInstance()
-                                                .methodByQualifiedNameIn(cluster, methodName);
+        List<JavaMethod> list = cluster.allMethodsByQualifiedName(methodName);
 
         assertThat(list.size(), is(equalTo(1)));
         assertThat(list.get(0).numberOfCodeLines(), is(equalTo(expectedNumberOfLines)));
     }
 
     // TODO: create matcher
-    private void testAllInnerMethodsOf(final @NotNull String fileName,
-                                      final @NotNull String... expectedMethods) throws Exception {
+    private void testAllInnerMethods(final @NotNull String fileName,
+                                     final @NotNull String... expectedMethods) throws Exception {
         File file = addToProjectDir(fileName);
         JavaParserTypeSolver typeSolver = getNewTypeSolver();
         CompilationUnit unit = JavaParser.parse(file);
 
-        assertThat(JavaAstNodeUtils.getInstance()
-                        .allInnerEntitiesOf(mockCluster(unit, typeSolver),
-                                            JavaMethod.creator)
+        assertThat(new DullJavaClusterOfEntities(unit, typeSolver)
+                        .allInnerEntities(JavaMethod.creator)
                         .stream()
                         .map(JavaMethod::qualifiedName)
                         .collect(Collectors.toList()),
