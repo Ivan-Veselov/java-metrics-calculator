@@ -40,7 +40,7 @@ public class JavaLocalVariableTest extends TestEnvironment {
         JavaParserTypeSolver typeSolver = getNewTypeSolver();
         CompilationUnit unit = JavaParser.parse(file);
 
-        assertThat(new DullJavaClusterOfEntities(unit, typeSolver)
+        assertThat(new DullJavaEntitiesHolder(unit, typeSolver)
                         .allInnerEntities(JavaLocalVariable.creator)
                         .stream()
                         .map(JavaLocalVariable::simpleName)

@@ -11,7 +11,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
-public class JavaMethod implements JavaClusterOfEntities {
+public class JavaMethod implements JavaEntitiesHolder {
     private final @NotNull JavaParserTypeSolver javaParserTypeSolver;
 
     private final @NotNull MethodDeclaration methodDeclaration;
@@ -43,7 +43,7 @@ public class JavaMethod implements JavaClusterOfEntities {
     }
 
     @Override
-    public @NotNull Node clusterNode() {
+    public @NotNull Node holderNode() {
         return methodDeclaration;
     }
 

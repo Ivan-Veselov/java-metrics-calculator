@@ -1,6 +1,5 @@
 package ru.spbau.bachelor2015.veselov.githubfac;
 
-import com.github.javaparser.JavaParser;
 import com.github.javaparser.ast.Node;
 import com.github.javaparser.symbolsolver.resolution.typesolvers.JavaParserTypeSolver;
 import org.apache.commons.io.FileUtils;
@@ -14,7 +13,6 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
 public class TestEnvironment {
     @Rule
@@ -45,19 +43,19 @@ public class TestEnvironment {
         return FileUtils.readFileToString(pathToFile.toFile(), (Charset) null);
     }
 
-    protected static class DullJavaClusterOfEntities implements JavaClusterOfEntities {
+    protected static class DullJavaEntitiesHolder implements JavaEntitiesHolder {
         private final Node node;
 
         private final JavaParserTypeSolver javaParserTypeSolver;
 
-        public DullJavaClusterOfEntities(final Node node,
-                                         final JavaParserTypeSolver javaParserTypeSolver) {
+        public DullJavaEntitiesHolder(final Node node,
+                                      final JavaParserTypeSolver javaParserTypeSolver) {
             this.node = node;
             this.javaParserTypeSolver = javaParserTypeSolver;
         }
 
         @Override
-        public @NotNull Node clusterNode() {
+        public @NotNull Node holderNode() {
             return node;
         }
 

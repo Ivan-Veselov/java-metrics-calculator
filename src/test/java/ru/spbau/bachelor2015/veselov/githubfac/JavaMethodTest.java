@@ -83,34 +83,34 @@ public class JavaMethodTest extends TestEnvironment {
         JavaParserTypeSolver typeSolver = getNewTypeSolver();
         CompilationUnit unit = JavaParser.parse(file);
 
-        JavaClusterOfEntities cluster = new DullJavaClusterOfEntities(unit, typeSolver);
+        JavaEntitiesHolder holder = new DullJavaEntitiesHolder(unit, typeSolver);
 
-        testNumberOfCodeLines(cluster,
+        testNumberOfCodeLines(holder,
                   "MeasureMyMethodsLength.m1",
           11);
 
-        testNumberOfCodeLines(cluster,
+        testNumberOfCodeLines(holder,
                   "MeasureMyMethodsLength.m2",
           7);
 
-        testNumberOfCodeLines(cluster,
+        testNumberOfCodeLines(holder,
                   "MeasureMyMethodsLength.m3",
           5);
 
-        testNumberOfCodeLines(cluster,
+        testNumberOfCodeLines(holder,
                   "MeasureMyMethodsLength.m4",
           3);
 
-        testNumberOfCodeLines(cluster,
+        testNumberOfCodeLines(holder,
                   "MeasureMyMethodsLength.m5",
           1);
     }
 
     // TODO: create matcher
-    private void testNumberOfCodeLines(final @NotNull JavaClusterOfEntities cluster,
+    private void testNumberOfCodeLines(final @NotNull JavaEntitiesHolder holder,
                                        final @NotNull String methodName,
                                        final int expectedNumberOfLines) throws Exception {
-        List<JavaMethod> list = cluster.allMethodsByQualifiedName(methodName);
+        List<JavaMethod> list = holder.allMethodsByQualifiedName(methodName);
 
         assertThat(list.size(), is(equalTo(1)));
         assertThat(list.get(0).numberOfCodeLines(), is(equalTo(expectedNumberOfLines)));
@@ -123,7 +123,7 @@ public class JavaMethodTest extends TestEnvironment {
         JavaParserTypeSolver typeSolver = getNewTypeSolver();
         CompilationUnit unit = JavaParser.parse(file);
 
-        assertThat(new DullJavaClusterOfEntities(unit, typeSolver)
+        assertThat(new DullJavaEntitiesHolder(unit, typeSolver)
                         .allInnerEntities(JavaMethod.creator)
                         .stream()
                         .map(JavaMethod::qualifiedName)

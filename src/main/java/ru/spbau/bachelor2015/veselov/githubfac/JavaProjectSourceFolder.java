@@ -14,10 +14,11 @@ import java.nio.file.SimpleFileVisitor;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static java.nio.file.FileVisitResult.CONTINUE;
 
-public class JavaProjectSourceFolder {
+public class JavaProjectSourceFolder implements JavaEntitiesCluster {
     private final @NotNull JavaParserTypeSolver javaParserTypeSolver;
 
     private final @NotNull List<JavaCompilationUnit> compilationUnits = new ArrayList<>();
@@ -45,7 +46,20 @@ public class JavaProjectSourceFolder {
         return new ArrayList<>(compilationUnits);
     }
 
-    public class JavaCompilationUnit implements JavaClusterOfEntities {
+    @Override
+    public @NotNull List<Node> cluster() {
+        return compilationUnits
+                .stream()
+                .map(JavaCompilationUnit::holderNode)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public @NotNull JavaParserTypeSolver clusterTypeSolver() {
+        return javaParserTypeSolver;
+    }
+
+    public class JavaCompilationUnit implements JavaEntitiesHolder {
         private final @NotNull JavaParserTypeSolver javaParserTypeSolver;
 
         private final @NotNull CompilationUnit compilationUnit;
@@ -57,7 +71,7 @@ public class JavaProjectSourceFolder {
         }
 
         @Override
-        public @NotNull Node clusterNode() {
+        public @NotNull Node holderNode() {
             return compilationUnit;
         }
 

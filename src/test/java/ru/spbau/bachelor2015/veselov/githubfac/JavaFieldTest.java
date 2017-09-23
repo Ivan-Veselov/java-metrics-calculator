@@ -38,7 +38,7 @@ public class JavaFieldTest extends TestEnvironment {
         JavaParserTypeSolver typeSolver = getNewTypeSolver();
         CompilationUnit unit = JavaParser.parse(file);
 
-        assertThat(new DullJavaClusterOfEntities(unit, typeSolver)
+        assertThat(new DullJavaEntitiesHolder(unit, typeSolver)
                         .allInnerEntities(JavaField.creator)
                         .stream()
                         .map(JavaField::simpleName)

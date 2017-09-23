@@ -11,14 +11,14 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
 
-public class JavaClusterOfEntitiesTest extends TestEnvironment {
+public class JavaEntitiesHolderTest extends TestEnvironment {
     @Test
     public void textualAstTest() throws Exception {
         File file = addToProjectDir("/JavaClasses/PrintMe.java");
         JavaParserTypeSolver javaParserTypeSolver = getNewTypeSolver();
         CompilationUnit unit = JavaParser.parse(file);
 
-        assertThat(new DullJavaClusterOfEntities(unit, javaParserTypeSolver).textualAst(),
+        assertThat(new DullJavaEntitiesHolder(unit, javaParserTypeSolver).textualAst(),
                 is(equalTo(astFrom("/AST/PrintMe"))));
     }
 }
