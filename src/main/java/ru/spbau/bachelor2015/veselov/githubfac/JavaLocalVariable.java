@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 // TODO: looks very similar to JavaField. There may be a place for generalization.
-public class JavaLocalVariable {
+public class JavaLocalVariable implements JavaNamedEntity {
     private final @NotNull JavaParserTypeSolver javaParserTypeSolver;
 
     private final @NotNull VariableDeclarator variableDeclarator;
@@ -41,6 +41,7 @@ public class JavaLocalVariable {
         this.variableDeclarator = variableDeclarator;
     }
 
+    @Override
     public @NotNull String simpleName() {
         return variableDeclarator.getNameAsString();
     }

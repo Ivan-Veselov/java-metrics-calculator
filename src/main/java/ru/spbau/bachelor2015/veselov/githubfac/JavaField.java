@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 // TODO: might be a good ability to receive field fully qualified name.
-public class JavaField {
+public class JavaField implements JavaNamedEntity {
     private final @NotNull JavaParserTypeSolver javaParserTypeSolver;
 
     private final @NotNull VariableDeclarator variableDeclarator;
@@ -40,6 +40,7 @@ public class JavaField {
         this.variableDeclarator = variableDeclarator;
     }
 
+    @Override
     public @NotNull String simpleName() {
         return variableDeclarator.getNameAsString();
     }

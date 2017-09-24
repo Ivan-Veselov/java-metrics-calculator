@@ -11,7 +11,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
-public class JavaMethod implements JavaEntitiesHolder {
+public class JavaMethod implements JavaEntitiesHolder, JavaNamedEntity {
     private final @NotNull JavaParserTypeSolver javaParserTypeSolver;
 
     private final @NotNull MethodDeclaration methodDeclaration;
@@ -50,6 +50,11 @@ public class JavaMethod implements JavaEntitiesHolder {
     @Override
     public @NotNull JavaParserTypeSolver clusterTypeSolver() {
         return javaParserTypeSolver;
+    }
+
+    @Override
+    public @NotNull String simpleName() {
+        return methodDeclaration.getNameAsString();
     }
 
     public @NotNull String qualifiedName() {

@@ -32,7 +32,8 @@ public interface JavaEntitiesCluster {
      * @param <T> a type of entities to create.
      * @return a list that was constructed by creator.
      */
-    // TODO: make entities creators type which will be a type of this method argument
+    // TODO: create overload of this method without List and
+    // TODO: rename it as it has more general purpose.
     default <T> @NotNull List<T> allInnerEntities(
             final @NotNull GenericVisitor<List<T>, JavaParserTypeSolver> creator) {
         return cluster()
