@@ -42,7 +42,7 @@ public class Main {
 
             for (int i = 0; i < methods.size(); i++) {
                 FileUtils.writeStringToFile(new File(name + "$" + i),
-                                            methods.get(i).textualAst(),
+                                            methods.get(i).jsonAst(),
                                             (Charset) null);
             }
         }

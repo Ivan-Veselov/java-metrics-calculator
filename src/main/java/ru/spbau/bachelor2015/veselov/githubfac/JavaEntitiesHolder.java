@@ -2,14 +2,14 @@ package ru.spbau.bachelor2015.veselov.githubfac;
 
 import com.github.javaparser.JavaToken;
 import com.github.javaparser.ast.Node;
-import com.github.javaparser.ast.visitor.GenericVisitor;
-import com.github.javaparser.symbolsolver.resolution.typesolvers.JavaParserTypeSolver;
-import org.apache.commons.lang3.StringUtils;
+import com.github.javaparser.printer.JsonPrinter;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonParser;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * An interface which represents a Java entity that stores other Java entities inside itself.
@@ -28,42 +28,13 @@ public interface JavaEntitiesHolder extends JavaEntitiesCluster {
     }
 
     /**
-     * Returns a textual representation of holder's AST.
+     * Returns a JSON representation of holder's AST.
      */
-    default @NotNull String textualAst() {
-        // TODO: rewrite with standard visitor which may have more proper way of traversing
-        class TextBuilder {
-            private static final int INDENT_INC_SIZE = 2;
+    default @NotNull String jsonAst() {
+        String string = new JsonPrinter(true).output(holderNode());
+        JsonElement element = new JsonParser().parse(string);
 
-            private final @NotNull StringBuilder stringBuilder = new StringBuilder();
-
-            public TextBuilder(final @NotNull Node node) {
-                traverse(node, 0);
-            }
-
-            public @NotNull String getText() {
-                return stringBuilder.toString();
-            }
-
-            private void traverse(final @NotNull Node node, final int indent) {
-                stringBuilder.append(StringUtils.repeat(' ', indent))
-                        .append(node.getClass().getSimpleName());
-
-                if (node.getChildNodes().isEmpty()) {
-                    stringBuilder.append('(')
-                            .append(node)
-                            .append(')');
-                }
-
-                stringBuilder.append('\n');
-
-                for (Node child : node.getChildNodes()) {
-                    traverse(child, indent + INDENT_INC_SIZE);
-                }
-            }
-        }
-
-        return new TextBuilder(holderNode()).getText();
+        return new GsonBuilder().setPrettyPrinting().create().toJson(element);
     }
 
     /**
