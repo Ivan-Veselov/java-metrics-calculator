@@ -69,6 +69,7 @@ public interface JavaEntitiesHolder extends JavaEntitiesCluster {
     /**
      * Returns number of code lines which holder consists of.
      */
+    // TODO: this method doesn't count comments.
     default int numberOfCodeLines() {
         int lines = 1;
 

@@ -2,10 +2,13 @@ package ru.spbau.bachelor2015.veselov.githubfac;
 
 import com.github.javaparser.ast.visitor.GenericVisitor;
 import com.github.javaparser.symbolsolver.resolution.typesolvers.JavaParserTypeSolver;
+import org.apache.commons.io.FileUtils;
 import org.jetbrains.annotations.NotNull;
 
-import java.io.IOException;
+import java.io.*;
+import java.nio.charset.Charset;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.List;
 
 public class Main {
@@ -16,6 +19,33 @@ public class Main {
         }
 
         JavaProjectSourceFolder sourceFolder = new JavaProjectSourceFolder(Paths.get(args[0]));
+
+        System.out.println(
+                "Write down fully qualified names of methods which AST should be printed.");
+        System.out.println("(EOL is a separator. Explicit EOF denotes the end of this list.)");
+
+        List<String> methodsNames = new ArrayList<>();
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(System.in))) {
+            String methodName = reader.readLine();
+            while (methodName != null) {
+                methodsNames.add(methodName);
+                methodName = reader.readLine();
+            }
+        }
+
+        for (String name : methodsNames) {
+            List<JavaMethod> methods = sourceFolder.allMethodsByQualifiedName(name);
+            if (methods.isEmpty()) {
+                System.out.println("No such method: " + name);
+                continue;
+            }
+
+            for (int i = 0; i < methods.size(); i++) {
+                FileUtils.writeStringToFile(new File(name + "$" + i),
+                                            methods.get(i).textualAst(),
+                                            (Charset) null);
+            }
+        }
 
         printLengthCharacteristicOf("Methods", JavaMethod.creator, sourceFolder);
         printNameCharacteristicOf("Fields", JavaField.creator, sourceFolder);

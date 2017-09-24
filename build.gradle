@@ -22,3 +22,13 @@ dependencies {
     testCompile group: 'org.hamcrest', name: 'hamcrest-all', version: '1.3'
     testCompile group: 'org.mockito', name: 'mockito-core', version: '2.10.0'
 }
+
+jar {
+    manifest {
+        attributes 'Main-Class': 'ru.spbau.bachelor2015.veselov.githubfac.Main'
+    }
+
+    from {
+        configurations.compile.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+}
